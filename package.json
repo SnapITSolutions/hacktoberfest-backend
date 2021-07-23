@@ -1,0 +1,8 @@
+{
+  "name": "hacktoberfest-backend",
+  "version": "1.0.0",
+  "main": "dist/app.js",
+  "repository": "git@github.com:SnapITSolutions/hacktoberfest-backend.git",
+  "author": "SnapIT Solutions",
+  "license": "GPL-3.0"
+}
