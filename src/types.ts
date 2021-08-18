@@ -8,6 +8,12 @@
 import express from 'express';
 import es from 'express-session';
 
+// Errors that the client will receive
+export type ResError = {
+  code: number,
+  message: string,
+}
+
 // UserData: Data we collect on the user.
 export type UserData = {
   name: string,

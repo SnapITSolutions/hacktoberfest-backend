@@ -4,6 +4,7 @@ export type TokenRes = {
 }
 
 // Public-related user data that is available for the whole internet.
+// TODO(dylhack): Use this rather than "any" for getUserData
 export type PubUserRes = {
 
 }

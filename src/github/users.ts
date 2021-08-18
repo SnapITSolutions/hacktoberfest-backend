@@ -8,6 +8,10 @@
 import got from 'got';
 import { v4 as uuid } from 'uuid';
 import { EXPIRE_STATE, GH, GH_API } from './constants.js';
+import { 
+  ERR_NOT_LOGGED_IN,
+  ERR_NO_STATE_CODE,
+} from './errors.js';
 import { TokenRes } from './types.js';
 import { Request, State } from '../types.js';
 import getConfig from '../config/index.js';
@@ -92,10 +96,13 @@ export function getToken(
   code?: string,
   state?: string,
 ): Promise<string> {
-  return new Promise((res, rej) => {
+  return new Promise(async (res, rej) => {
+    const log = await getLogger('getToken');
+
     if (code !== undefined) {
       if (state === undefined) {
-        throw new Error("A state code wasn't provided.");
+        log.debug(`${req.sessionID} isn't logged in.`);
+        throw new Error(ERR_NO_STATE_CODE);
       }
 
       login(code, state)
@@ -114,7 +121,7 @@ export function getToken(
     }
 
     if (req.session.token === undefined) {
-      throw new Error("User isn't logged in.");
+      throw new Error(ERR_NOT_LOGGED_IN);
     }
 
     res(req.session.token);
@@ -137,10 +144,13 @@ export async function getUserData(
     return req.session.user;
   }
 
+  const log = await getLogger('getUserData');
   const target = getUrlApi('/user');
   const token = optToken || await getToken(req);
+
   if (token === null) {
-    throw new Error("User isn't logged in.");
+    log.debug(`${req.sessionID} isn't logged in.`);
+    throw new Error(ERR_NOT_LOGGED_IN);
   }
 
   const resp = await got.get<any>(
@@ -162,7 +172,8 @@ export async function getUserData(
  * @returns {State}
  */
 export function getState(req: Request): Promise<State> {
-  return new Promise((res, rej) => {
+  return new Promise(async (res, rej) => {
+    const log = await getLogger('getState');
     // Check if the user already has a state code generated.
     if (req.session.state !== undefined) {
       const now = new Date();
@@ -181,6 +192,7 @@ export function getState(req: Request): Promise<State> {
     req.session.state = state;
     req.session.save(rej);
 
+    log.debug(`Generated state "${code}" for "${req.sessionID}"`);
     res(state);
   });
 }

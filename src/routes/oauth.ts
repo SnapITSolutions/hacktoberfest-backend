@@ -6,10 +6,27 @@
 import { Response } from 'express';
 import { URL } from 'node:url';
 import { badReq } from './util.js';
-import { Request } from '../types.js';
+import { 
+  ResError,
+  Request,
+} from '../types.js';
 import getConfig from '../config/index.js';
 import { getLogger } from '../server.js';
-import { getState, getToken, getUserData } from '../github/index.js';
+import { INTERNAL_ERROR } from './errors.js';
+import { 
+  ERR_NOT_LOGGED_IN,
+  getState,
+  getToken,
+  getUserData,
+} from '../github/index.js';
+
+
+// Errors
+const CODE_OFFSET = 200;
+const NOT_LOGGED_IN: ResError = {
+  code: CODE_OFFSET + 1,
+  message: "You're not logged in.",
+};
 
 /**
  * This will get the redirect URL to GitHub's OAuth login page.
@@ -27,6 +44,27 @@ async function getRedirUrl(state: string): Promise<string> {
   res.searchParams.set('state', state);
 
   return res.toString();
+}
+
+/**
+ * GET /oauth/whoami
+ * Get the user date that you're logged-in as.
+ */
+export async function whoAmI(req: Request, res: Response): Promise<void> {
+  try {
+    const user = await getUserData(req);
+
+    res.send(user);
+  } catch (e) {
+    if (e.message === ERR_NOT_LOGGED_IN) {
+      res.status(401);
+      res.send(NOT_LOGGED_IN);
+    } else {
+      res.status(500);
+      res.send(INTERNAL_ERROR);
+    }
+  }
+  res.end();
 }
 
 /**
