@@ -1,0 +1,15 @@
+logLevel: 'info'
+database:
+  host: localhost
+  port: 5432
+  database: postgres
+  username: postgres
+  password: postgres
+oauth:
+  clientId: ''
+  clientSecret: ''
+  scopes: ['user']
+server:
+  port: 0
+  domain: 'example.com'
+  sessionKey: 'enter a random key here'
