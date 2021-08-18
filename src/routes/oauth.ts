@@ -121,8 +121,7 @@ export async function callback(
     const userData = await getUserData(req, token);
     res.send(userData);
   } catch (err) {
-    log.error(`${req.sessionID} ran into an error... Redirecting.`);
-    log.error(err);
+    log.error(`${req.sessionID} ran into an error... Redirecting.\n`, err);
     res.redirect('/');
   }
   res.end();
