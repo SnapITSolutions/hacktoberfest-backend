@@ -117,9 +117,7 @@ export async function callback(
   const log = await getLogger('oauth-callback');
 
   try {
-    const token = await getToken(req, code, state.key);
-    const userData = await getUserData(req, token);
-    res.send(userData);
+    res.redirect('/profile');
   } catch (err) {
     log.error(`${req.sessionID} ran into an error... Redirecting.\n`, err);
     res.redirect('/');
