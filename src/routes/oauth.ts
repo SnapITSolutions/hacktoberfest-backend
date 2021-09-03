@@ -117,7 +117,7 @@ export async function callback(
   const log = await getLogger('oauth-callback');
 
   try {
-    res.redirect('/profile');
+    res.redirect('/HacktoberFest/profile');
   } catch (err) {
     log.error(`${req.sessionID} ran into an error... Redirecting.\n`, err);
     res.redirect('/');
