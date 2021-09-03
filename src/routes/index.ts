@@ -11,8 +11,8 @@ import * as oauth from './oauth.js';
  * @param {Application} svr
  */
 export default function addRoutes(svr: Application): void {
-  svr.get('/api/oauth/whoami', oauth.whoAmI);
-  svr.get('/api/oauth/login', oauth.redirect);
-  svr.get('/api/oauth/callback', oauth.callback);
-  svr.post('/api/oauth/logout', oauth.logout);
+  svr.get('/oauth/whoami', oauth.whoAmI);
+  svr.get('/oauth/login', oauth.redirect);
+  svr.get('/oauth/callback', oauth.callback);
+  svr.post('/oauth/logout', oauth.logout);
 }
