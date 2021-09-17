@@ -34,6 +34,7 @@ export async function setSession(
 ): Promise<void> {
   const db = await getDb();
   try {
+    delete data._deleted;
     await db.insert(data, id);
   } catch (err) {
     const log = await getLogger('setSession');
