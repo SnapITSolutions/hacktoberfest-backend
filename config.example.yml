@@ -10,6 +10,6 @@ oauth:
   clientSecret: ''
   scopes: ['user']
 server:
-  port: 0
+  port: 5353
   domain: 'example.com'
   sessionKey: 'enter a random key here'
