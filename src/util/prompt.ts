@@ -38,7 +38,9 @@ module maskable {
       }
       callback();
     } catch (err) {
-      callback(err);
+      if (err instanceof Error) {
+        callback(err);
+      }
     }
   }
 

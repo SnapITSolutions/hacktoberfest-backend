@@ -58,14 +58,16 @@ export async function whoAmI(req: Request, res: Response): Promise<void> {
     res.send(user);
   } catch (e) {
     const log = await getLogger('whoami');
-    if (e.message === ERR_NOT_LOGGED_IN) {
-      res.status(401);
-      res.send(NOT_LOGGED_IN);
-      log.debug(`${req.sessionID} isn't logged in`);
-    } else {
-      res.status(500);
-      res.send(INTERNAL_ERROR);
-      log.error(`${req.sessionID} ran into an internal error.\n`, e);
+    if (e instanceof Error) {
+      if (e.message === ERR_NOT_LOGGED_IN) {
+        res.status(401);
+        res.send(NOT_LOGGED_IN);
+        log.debug(`${req.sessionID} isn't logged in`);
+      } else {
+        res.status(500);
+        res.send(INTERNAL_ERROR);
+        log.error(`${req.sessionID} ran into an internal error.\n`, e);
+      }
     }
   }
   res.end();

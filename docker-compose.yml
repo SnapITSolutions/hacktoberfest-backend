@@ -6,7 +6,7 @@ services:
       COUCHDB_USER: hacktoberfest
       COUCHDB_PASSWORD: hacktoberfest
     ports: 
-      - '5432:5432'
+      - '5984:5984'
     volumes:
       - hacktoberfest-db:/var/lib/postgresql/data
 

@@ -31,12 +31,13 @@ function getLogger(context: string): Promise<log4js.Logger> {
 export async function setSession(
   id: string,
   data: SessionData,
-): Promise<void> {
+): Promise<string> {
   const db = await getDb();
   try {
     delete data._deleted;
     const res = await db.insert(data, id);
     data._rev = res.rev;
+    return res.rev;
   } catch (err) {
     const log = await getLogger('setSession');
     log.error(`${id} ran into an error.\n`, err);
