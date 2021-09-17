@@ -7,10 +7,10 @@
   "type": "module",
   "license": "GPL-3.0",
   "scripts": {
-    "dev": ""
+    "start": "node ./dist/app.js"
   },
   "engines": {
-    "node": ">=12"
+    "node": ">=14"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.2",
