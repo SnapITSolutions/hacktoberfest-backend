@@ -122,7 +122,7 @@ export async function callback(
 
 
   try {
-    await getToken(code, state.key);
+    await getToken(req, code, state.key);
     log.debug(state);
     res.redirect('/HacktoberFest/profile');
   } catch (err) {
