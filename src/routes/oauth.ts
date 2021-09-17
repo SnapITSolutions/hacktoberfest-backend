@@ -111,7 +111,7 @@ export async function callback(
   res: Response,
 ): Promise<void> {
   const { code } = req.query;
-  const { state } = req.session;
+  const state = await getState(req);
 
   // That means they jumped to this point before going to /oauth
   if (code === undefined || state === undefined) {
@@ -119,10 +119,11 @@ export async function callback(
     return;
   }
   const log = await getLogger('oauth-callback');
-  await getToken(code, state.key);
 
 
   try {
+    await getToken(code, state.key);
+    log.debug(state);
     res.redirect('/HacktoberFest/profile');
   } catch (err) {
     log.error(`${req.sessionID} ran into an error... Redirecting.\n`, err);

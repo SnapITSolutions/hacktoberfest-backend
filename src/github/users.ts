@@ -192,7 +192,13 @@ export function getState(req: Request): Promise<State> {
       expires: new Date(expiresEpoch),
     };
     req.session.state = state;
-    req.session.save(rej);
+    req.session.save((err) => {
+      if (err !== undefined) {
+        rej(err);
+      } else {
+        res(state);
+      }
+    });
 
     log.debug(`Generated state "${code}" for "${req.sessionID}"`);
     res(state);
