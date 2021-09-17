@@ -35,7 +35,8 @@ export async function setSession(
   const db = await getDb();
   try {
     delete data._deleted;
-    await db.insert(data, id);
+    const res = await db.insert(data, id);
+    data._rev = res.rev;
   } catch (err) {
     const log = await getLogger('setSession');
     log.error(`${id} ran into an error.\n`, err);
@@ -79,6 +80,6 @@ export async function getSession(
   } catch (err) {
     const log = await getLogger('getSession');
     log.error(`failed to get ${id}.\n`, err);
-    throw err;
+    return null;
   }
 }
