@@ -91,7 +91,7 @@ export async function login(code: string, state: string): Promise<string> {
  * // Get a token out of a request session data
  * const token = await login(req);
  */
-export function getToken(
+export async function getToken(
   req: Request,
   code?: string,
   state?: string,

@@ -16,6 +16,7 @@ import { INTERNAL_ERROR } from './errors.js';
 import { 
   ERR_NOT_LOGGED_IN,
   getState,
+  getToken,
   getUserData,
   login,
 } from '../github/index.js';
@@ -118,7 +119,8 @@ export async function callback(
     return;
   }
   const log = await getLogger('oauth-callback');
-  await login(code, state.key);
+  await getToken(code, state.key);
+
 
   try {
     res.redirect('/HacktoberFest/profile');
