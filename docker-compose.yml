@@ -1,0 +1,20 @@
+version: "3.7"
+services:
+  db:
+    image: couchdb
+    environment:
+      COUCHDB_USER: hacktoberfest
+      COUCHDB_PASSWORD: hacktoberfest
+    ports: 
+      - '5432:5432'
+    volumes:
+      - hacktoberfest-db:/var/lib/postgresql/data
+
+  hacktoberfest:
+    build:
+      context: .
+    depends_on:
+      - db
+
+volumes:
+  hacktoberfest-db:
