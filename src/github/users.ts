@@ -102,7 +102,8 @@ export function getToken(
     if (code !== undefined) {
       if (state === undefined) {
         log.debug(`${req.sessionID} isn't logged in.`);
-        throw new Error(ERR_NO_STATE_CODE);
+        rej(new Error(ERR_NO_STATE_CODE));
+        return;
       }
 
       login(code, state)
@@ -121,7 +122,8 @@ export function getToken(
     }
 
     if (req.session.token === undefined) {
-      throw new Error(ERR_NOT_LOGGED_IN);
+      rej(new Error(ERR_NOT_LOGGED_IN));
+      return;
     }
 
     res(req.session.token);
