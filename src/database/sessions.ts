@@ -6,7 +6,6 @@
 import nano from 'nano';
 import log4js from 'log4js';
 import * as internal from './index.js';
-import { v4 as uuid } from 'uuid';
 import {
   CallbackError,
   Session,
@@ -34,7 +33,14 @@ export async function setSession(
   data: SessionData,
 ): Promise<void> {
   const db = await getDb();
-  await db.insert(data, id);
+  try {
+    await db.insert(data, id);
+  } catch (err) {
+    const log = await getLogger('setSession');
+    log.error(`${id} ran into an error.\n`, err);
+    log.debug(`${id} ran into an error.\n`, data);
+    throw err;
+  }
 }
 
 export async function dropSession(id: string): Promise<void> {
@@ -53,19 +59,25 @@ export async function dropSession(id: string): Promise<void> {
 export async function getSession(
   id: string,
 ): Promise<SessionData | null> {
-  const db = await getDb();
-  const storedRes = await db.get(id);
+  try {
+    const db = await getDb();
+    const storedRes = await db.get(id);
 
-  if (storedRes === null) {
-    return null;
+    if (storedRes === null) {
+      return null;
+    }
+
+    if (storedRes._deleted) {
+      return null;
+    }
+
+    return {
+      ...storedRes,
+      _deleted: storedRes._deleted || false,
+    };
+  } catch (err) {
+    const log = await getLogger('getSession');
+    log.error(`failed to get ${id}.\n`, err);
+    throw err;
   }
-
-  if (storedRes._deleted) {
-    return null;
-  }
-
-  return {
-    ...storedRes,
-    _deleted: storedRes._deleted || false,
-  };
 }
