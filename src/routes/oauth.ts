@@ -126,7 +126,7 @@ export async function callback(
   try {
     await getToken(req, code, state.key);
     log.debug(state);
-    res.redirect('/HacktoberFest/profile');
+    res.redirect('/profile');
   } catch (err) {
     log.error(`${req.sessionID} ran into an error... Redirecting.\n`, err);
     res.redirect('/');
