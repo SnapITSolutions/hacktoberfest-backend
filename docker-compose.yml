@@ -13,6 +13,8 @@ services:
   hacktoberfest:
     build:
       context: .
+    ports: 
+      - '5353:5353'
     depends_on:
       - db
 
