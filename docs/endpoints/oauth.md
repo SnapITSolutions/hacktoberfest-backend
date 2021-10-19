@@ -1,14 +1,14 @@
 # OAuth Related Endpoints
 Here are all the endpoints relating to OAuth
 
-## GET /oauth/login
+## GET /api/oauth/login
 Redirect users to this endpoint to take them to GitHub's OAuth login page.
 
-## GET /oauth/callback?code=\<code>
+## GET /api/oauth/callback?code=\<code>
 This endpoint is used by GitHub when the user successfully logs-in.
 
-## GET /oauth/whoami
+## GET /api/oauth/whoami
 To get user data
 
-## POST /oauth/logout
+## POST /api/oauth/logout
 Logout the user
