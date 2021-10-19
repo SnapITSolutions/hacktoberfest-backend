@@ -1,22 +1,20 @@
 version: "3.7"
 services:
   db:
-    image: couchdb
+    image: mongo
+    restart: always
     environment:
-      COUCHDB_USER: hacktoberfest
-      COUCHDB_PASSWORD: hacktoberfest
-    ports: 
-      - '5984:5984'
-    volumes:
-      - hacktoberfest-db:/var/lib/postgresql/data
-
+      MONGO_INITDB_ROOT_USERNAME: hacktoberfest
+      MONGO_INITDB_ROOT_PASSWORD: hacktoberfest
+      MONGO_INITDB_DATABASE: hacktoberfest
+    ports:
+      - '27017:27017'
   hacktoberfest:
     build:
       context: .
-    ports: 
+    ports:
       - '5353:5353'
     depends_on:
       - db
-
 volumes:
   hacktoberfest-db:

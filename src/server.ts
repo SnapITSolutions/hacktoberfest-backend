@@ -3,6 +3,7 @@
  * @copyright 2021 SnapIT Solutions <https://snapit.solutions/>
  * @license GPL-3.0
  */
+import MongoStore from 'connect-mongo';
 import express from 'express';
 import es from 'express-session';
 import log4js from 'log4js';
@@ -10,7 +11,6 @@ import { v4 as uuid } from 'uuid';
 import * as util from './util/index.js';
 import getConfig, { Config } from './config/index.js';
 import addRoutes from './routes/index.js';
-import SessionStore from './sessions.js';
 
 export const server = express();
 
@@ -29,7 +29,15 @@ export default async function start(optConf?: Config): Promise<void> {
   const config = optConf || await getConfig();
   const log = await getLogger('start');
   const svr = config.server;
-  const store = new SessionStore();
+  const {
+    username, password,
+    host, port,
+  } = config.database;
+  const encoded = encodeURI(`${username}:${password}`);
+  const url = `mongodb://${encoded}@${host}:${port}`;
+  const store = MongoStore.create({
+    mongoUrl: url,
+  });
 
   server.listen(svr.port, () => {
     log.info(`Server is listening on port ${svr.port}`);

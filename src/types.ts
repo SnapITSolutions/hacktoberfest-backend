@@ -52,7 +52,6 @@ export interface SessionData extends es.SessionData {
   // CouchDB related data.
   _rev?: string,
   _id?: string,
-  _deleted?: boolean,
 }
 
 // StoredSession: This is the output of the CouchDB query.
