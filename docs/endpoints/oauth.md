@@ -7,5 +7,8 @@ Redirect users to this endpoint to take them to GitHub's OAuth login page.
 ## GET /oauth/callback?code=\<code>
 This endpoint is used by GitHub when the user successfully logs-in.
 
+## GET /oauth/whoami
+To get user data
+
 ## POST /oauth/logout
 Logout the user
